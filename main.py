@@ -111,5 +111,5 @@ if __name__ == '__main__':
             {'size': sizes}]
             a = json.dumps(content, indent=4, ensure_ascii=False)
             file.write(a)
-    print('Загрзка на ваш Яндекс диск прошла успешно!')
+    print('Загрузка на ваш Яндекс диск прошла успешно!')
             
