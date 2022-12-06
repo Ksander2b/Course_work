@@ -8,10 +8,6 @@ config.read("settings.ini")
 vktoken = config["Tokens"]["vk"]
 ydtoken = config["Tokens"]["yd"]
 
-with open ('settings.txt', 'r') as f:
-    token = f.readline().strip()
-    token_2 = f.readline().strip()
-
 
 def jsonlogs():
     for names,sizes in download.get_data_for_json().items():
@@ -28,8 +24,8 @@ def jsonlogs():
 
 
 if __name__ == '__main__':
-    download = Vkmodul.VkDownloader(token)
-    uploader = Ydmodul.YaUploader(token_2)
+    download = Vkmodul.VkDownloader(vktoken)
+    uploader = Ydmodul.YaUploader(ydtoken)
     uploader.create_folder()
     for photo_name,photo_path in download.get_all_photo().items():
         uploader.upload(photo_path, f"VK/{photo_name}.jpg")

@@ -5,16 +5,36 @@ import time
 class VkDownloader():
     def __init__(self, token):
         self.token = token
+        self.name = input('Введите id или screen_name пользователя: ')
+        self.count = input('Сколько фотографий вы хотите скачать: ')
+
+
+    def _get_id(self):
+        url = 'https://api.vk.com/method/utils.resolveScreenName'
+        params = {
+            'screen_name': self.name,
+            'access_token': self.token,
+            'v': '5.131'
+            }
+        res = requests.get(url, params = params)
+        result = res.json()['response']
+        return result
 
 
     def download(self):
         url = 'https://api.vk.com/method/photos.get'
+        id = self._get_id()
+        if id == []:
+            name = self.name
+        else:
+            name = id['object_id']
         params = {
-            'owner_id': '8928989',
+            'owner_id': name,
             'album_id': 'profile',
             'access_token': self.token,
             'extended': '1',
             'photo_sizes': '1',
+            'count': self.count,
             'v': '5.131'
             }
         res = requests.get(url, params = params)
@@ -41,8 +61,7 @@ class VkDownloader():
     def get_all_photo(self):
         content = self.download()
         photo_dict = {}
-        target_iterrations = content['response']['count']
-        bar = IncrementalBar('Загрузка', max = target_iterrations)
+        bar = IncrementalBar('Загрузка', max = int(self.count))
         for photo in content['response']['items']:
             bar.next()
             max_size = 0
